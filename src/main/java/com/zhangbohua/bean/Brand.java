@@ -1,6 +1,7 @@
 package com.zhangbohua.bean;
 
 public class Brand {
+	private String od;
 	private Integer bid;
 	private String bname;
 	public Integer getBid() {
