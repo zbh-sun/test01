@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhangbohua.mapper.GoodsMapper">
+	<select id="findList" resultType="com.zhangbohua.bean.Goods" parameterType="com.zhangbohua.bean.Goods">
+		SELECT * from (SELECT g.* ,b.bname ,k.kname
+FROM goods g , brand b, kind k where g.bid=b.bid and g.kid=k.kid
+GROUP BY g.gid
+)t 
+	<where>
+		<if test="bname !=null and bname != ''">
+		t.bname like '%${bname}%' 
+		</if>
+		<if test="kname !=null and kname != ''">
+		and t.kname like '%${kname}%' 
+		</if>
+		<if test="sp !=null and sp != '' and ep !=null and ep != ''">
+		 and t.price between  #{sp} and #{ep}
+		</if>
+		
+		<if test="gname !=null and gname != ''">
+		 and t.gname like '%${gname}%'
+		</if>
+	</where>
+		
+	</select>
+	<select id="queryB" resultType="com.zhangbohua.bean.Brand">
+		select * from brand
+	</select>
+	<select id="queryK" resultType="com.zhangbohua.bean.Kind">
+		select * from kind
+	</select>
+	<insert id="add">
+		insert goods(gid,gname,ename,bid,kid,size,price,gnum,label,picurl) 
+		value(gid,'#{gname}','#{ename}','#{bid}','#{kid}','#{size}','#{price}','#{gnum}','#{label}','#{picurl}') 
+	</insert>
+</mapper>
